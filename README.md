@@ -1,5 +1,6 @@
-# VJI (Vim Java Interface)
+# JVI (Java Vim Interface)
 This project is hoping to serve as an interface (plugin) for VIM to build and run Java files
+(Hasn't been setup for vim yet but we might get there)
 
 # Setup
 - Configuration file (json, conf, something with native support from Java or Bash)
