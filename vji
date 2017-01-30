@@ -1,0 +1,15 @@
+#!/bin/bash
+# TODO Add custom autocomplete menu
+if [ -z "$1" ]; then
+	echo usage: $0 something
+	exit
+fi
+if [ "$1" = "new" ]; then
+	if [ -z "$2" ]; then
+		echo usage: $0 new ProjectName
+		exit
+	fi
+	mkdir $2 $2/bin $2/src
+	touch $2/vji.conf
+	java Config write $(pwd)/$2/vji.conf $(pwd)/$2/src $(pwd)/$2/bin
+fi
