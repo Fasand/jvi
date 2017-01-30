@@ -1,9 +1,28 @@
 #!/bin/bash
 # TODO Add custom autocomplete menu
+# TODO Change options handling to a switch statement?
+
+OPTIONS="new [project | class]	project_config	run	test"
+
+# No option supplied
 if [ -z "$1" ]; then
-	echo "usage: $0 [project_new] [project_config]"
+	echo "Options:	$OPTIONS"
+	echo "Usage: $0 [option] [arguments]"
 	exit
 fi
+
+# New [what]
+if [ "$1" = "new" ]; then
+	if [ "$2" = "class" ]; then
+		echo "New class"
+	fi
+	if [ "$2" = "project" ]; then
+		echo "Move project definition here"
+	fi
+fi
+
+# New project
+# TODO Move to the "new [what]" option
 if [ "$1" = "project_new" ]; then
 	# No project name supplied
 	if [ -z "$2" ]; then
@@ -21,6 +40,9 @@ if [ "$1" = "project_new" ]; then
 	touch $2/vji.conf
 	java Config write $(pwd)/$2/vji.conf $(pwd)/$2/src $(pwd)/$2/bin
 fi
+
+# Project config
+# TODO Could be renamed to config if no other config (or branch out as with new)
 if [ "$1" = "project_config" ]; then
 	# Need all arguments
 	if [ -z "$2" ] || [ -z "$3" ] || [ -z "$4" ] ; then
@@ -50,4 +72,16 @@ if [ "$1" = "project_config" ]; then
 	fi
 	# Update config file 
 	java Config write $(pwd)/$2/vji.conf $3 $4
+fi
+
+# Run
+# TODO Implement and test
+if [ "$1" = "run" ]; then
+	echo "I won't run anything for you. Quit trying!"
+fi
+
+# Test
+# TODO Implement and test
+if [ "$1" = "test" ]; then
+	echo "Nothing to test, I'm afraid."
 fi
