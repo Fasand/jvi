@@ -30,6 +30,24 @@ if [ "$1" = "project_config" ]; then
 		echo "(src_path and bin_path must be absolute for now)"
 		exit
 	fi
+	# Project does not exist
+	if [ ! -d "$2" ]; then
+		echo "[Warning] Project does not exist. Use: $0 project_new ProjectName."
+		exit
+	fi
+	# Project exists but doesn't have bin or src folders
+	if [ ! -d "$2/src" ]; then
+		echo "[Warning] Project does not yet have a src folder. It will be created."
+		mkdir $2/src
+	fi
+	if [ ! -d "$2/bin" ]; then
+		echo "[Warning] Project does not yet have a bin folder. It will be created."
+		mkdir $2/bin
+	fi
+	# Show a warning when the config file does not exist
+	if [ ! -f "$2/vji.conf" ]; then
+		echo "[Warning] Config file does not exist yet. It will be created."
+	fi
 	# Update config file 
 	java Config write $(pwd)/$2/vji.conf $3 $4
 fi
