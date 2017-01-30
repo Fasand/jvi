@@ -37,8 +37,8 @@ if [ "$1" = "project_new" ]; then
 	# Create folder structure
 	mkdir $2 $2/bin $2/src
 	# Create config file and fill with created paths
-	touch $2/vji.conf
-	java Config write $(pwd)/$2/vji.conf $(pwd)/$2/src $(pwd)/$2/bin
+	touch $2/jvi.conf
+	java Config write $(pwd)/$2/jvi.conf $(pwd)/$2/src $(pwd)/$2/bin
 fi
 
 # Project config
@@ -67,11 +67,11 @@ if [ "$1" = "project_config" ]; then
 		mkdir $2/bin
 	fi
 	# Show a warning when the config file does not exist
-	if [ ! -f "$2/vji.conf" ]; then
+	if [ ! -f "$2/jvi.conf" ]; then
 		echo "[Warning] Config file does not exist yet. It will be created."
 	fi
 	# Update config file 
-	java Config write $(pwd)/$2/vji.conf $3 $4
+	java Config write $(pwd)/$2/jvi.conf $3 $4
 fi
 
 # Run
