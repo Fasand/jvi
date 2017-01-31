@@ -31,28 +31,22 @@ if [ "$1" = "new" ]; then
 		echo "New class"
 	fi
 	if [ "$2" = "project" ]; then
-		echo "Move project definition here"
+		# No project name supplied
+		if [ -z "$3" ]; then
+			echo Usage: $0 new project ProjectName
+			exit
+		fi
+		# Folder exists
+		if [ -d "$3" ]; then
+			echo Project $3 already exists. Use: $0 project_config ProjectName src_path bin_path
+			exit
+		fi
+		# Create folder structure
+		mkdir $3 $3/bin $3/src
+		# Create config file and fill with created paths
+		touch $3/jvi.conf
+		java Config write $(pwd)/$3/jvi.conf $(pwd)/$3/src $(pwd)/$3/bin
 	fi
-fi
-
-# New project
-# TODO Move to the "new [what]" option
-if [ "$1" = "project_new" ]; then
-	# No project name supplied
-	if [ -z "$2" ]; then
-		echo usage: $0 project_new ProjectName
-		exit
-	fi
-	# Folder exists
-	if [ -d "$2" ]; then
-		echo Project $2 already exists. Use: $0 project_config ProjectName src_path bin_path
-		exit
-	fi
-	# Create folder structure
-	mkdir $2 $2/bin $2/src
-	# Create config file and fill with created paths
-	touch $2/jvi.conf
-	java Config write $(pwd)/$2/jvi.conf $(pwd)/$2/src $(pwd)/$2/bin
 fi
 
 # Project config
@@ -97,5 +91,11 @@ fi
 # Test
 # TODO Implement and test
 if [ "$1" = "test" ]; then
+	echo "Nothing to test, I'm afraid."
+fi
+
+# Build
+# TODO Implement and test
+if [ "$1" = "build" ]; then
 	echo "Nothing to test, I'm afraid."
 fi
