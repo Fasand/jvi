@@ -4,6 +4,20 @@
 
 OPTIONS="new [project | class]	project_config	run	test"
 
+function findConfig {
+	# Find all jvi.conf files
+	CONF_LOCATION=$(find $(pwd) -name 'jvi.conf')
+	# If there's more then one (anything but one), scream
+	COUNT=$(grep 'jvi.conf' -o <<< $CONF_LOCATION | wc -l)
+	if [ $COUNT -ne 1 ]; then
+		echo "Too many or too few config files"
+		echo $CONF_LOCATION
+		exit
+	fi
+}
+
+# findConfig
+
 # No option supplied
 if [ -z "$1" ]; then
 	echo "Options:	$OPTIONS"
