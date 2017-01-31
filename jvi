@@ -14,6 +14,7 @@ function findConfig {
 		echo $CONF_LOCATION
 		exit
 	fi
+	echo $CONF_LOCATION
 }
 
 # findConfig
@@ -28,7 +29,22 @@ fi
 # New [what]
 if [ "$1" = "new" ]; then
 	if [ "$2" = "class" ]; then
-		echo "New class"
+		# If there are multiple, it will exit
+		CONFIG=$(findConfig)
+		# Not in the project folder
+		if [ $(ls | grep 'jvi.conf' -c) -ne 1 ]; then
+			echo "You must be in a project's folder"
+			exit
+		fi
+		# Class name not specified
+		if [ -z $3 ]; then
+			echo "Specify the class name"
+			echo "Usage: $0 new class ClassName"
+		fi
+		# Create the class and fill with boilerplate
+		touch $(pwd)/src/$3.java
+		echo -e "public class $3 {\n\n\tpublic static void main(String[] args) {\n\t\t// Enter code here\n\t}\n\n}" \
+			>> $(pwd)/src/$3.java
 	fi
 	if [ "$2" = "project" ]; then
 		# No project name supplied
