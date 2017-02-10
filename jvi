@@ -123,8 +123,16 @@ fi
 
 # Run
 # TODO Find out how to run java files from absolute path
+# TODO Add error handling for when not in a project
 if [ "$1" = "run" ]; then
-	echo "I won't run anything for you. Quit trying!"
+	if [ -z "$2" ]; then
+		"Please specify a class to run"
+	fi
+	$0 buildall
+	CURRENT_PATH=$(pwd)
+	cd $(getBinPath)
+	java $2
+	cd $CURRENT_PATH
 fi
 
 # Test
