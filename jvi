@@ -3,7 +3,7 @@
 # TODO Change options handling to a switch statement?
 # TODO Rewrite Java Config class to bash script
 
-OPTIONS="new [class | project]	project_config	run	test	build"
+OPTIONS="init	new [class]	project_config	run	test	build"
 
 # ---- ---- CONFIG ---- ---- #
 # TODO Add error handling when many projects
@@ -24,7 +24,6 @@ function findConfig {
 # project_name=Example
 # src_path=/full/path/to/project/src
 # bin_path=/full/path/to/project/bin
-
 function getProjectName {
 	CONFIG=$(findConfig)
 	echo $(cat $config | grep project_name | cut -f2 -d=)
@@ -47,6 +46,25 @@ if [ -z "$1" ]; then
 	exit
 fi
 
+# Init
+if [ "$1" = "init" ]; then
+	if [ -z "$2" ]; then
+		echo "You must specify a project name"
+		echo "Usage: $0 init ProjectName"
+		exit
+	fi
+	# Folder exists
+	if [ -d "$2" ]; then
+		echo "Project $3 already exists. Use: $0 project_config ProjectName src_path bin_path"
+		exit
+	fi
+	# Create folder structure
+	mkdir $2 $2/bin $2/src
+	# Create config file and fill with created paths
+	touch $2/jvi.conf
+	echo -e "# JVI configuration\nproject_name=$2\nsrc_path=$(pwd)/$2/src\nbin_path=$(pwd)/$2/bin" >> $(pwd)/$2/jvi.conf 
+fi
+
 # New [class | project]
 if [ "$1" = "new" ]; then
 	if [ "$2" = "class" ]; then
@@ -67,23 +85,6 @@ if [ "$1" = "new" ]; then
 		touch $(pwd)/src/$3.java
 		echo -e "public class $3 {\n\n\tpublic static void main(String[] args) {\n\t\t// Enter code here\n\t}\n\n}" \
 			>> $(pwd)/src/$3.java
-	fi
-	if [ "$2" = "project" ]; then
-		# No project name supplied
-		if [ -z "$3" ]; then
-			echo Usage: $0 new project ProjectName
-			exit
-		fi
-		# Folder exists
-		if [ -d "$3" ]; then
-			echo Project $3 already exists. Use: $0 project_config ProjectName src_path bin_path
-			exit
-		fi
-		# Create folder structure
-		mkdir $3 $3/bin $3/src
-		# Create config file and fill with created paths
-		touch $3/jvi.conf
-		java Config write $(pwd)/$3/jvi.conf $(pwd)/$3/src $(pwd)/$3/bin
 	fi
 fi
 
