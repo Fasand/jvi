@@ -28,12 +28,10 @@ function getProjectName {
 	CONFIG=$(findConfig)
 	echo $(cat $config | grep project_name | cut -f2 -d=)
 }
-
 function getSrcPath {
 	CONFIG=$(findConfig)
 	echo $(cat $CONFIG | grep src_path | cut -f2 -d=)
 }
-
 function getBinPath {
 	CONFIG=$(findConfig)
 	echo $(cat $CONFIG | grep bin_path | cut -f2 -d=)
@@ -48,6 +46,7 @@ fi
 
 # Init
 if [ "$1" = "init" ]; then
+	# No project name
 	if [ -z "$2" ]; then
 		echo "You must specify a project name"
 		echo "Usage: $0 init ProjectName"
@@ -65,7 +64,8 @@ if [ "$1" = "init" ]; then
 	echo -e "# JVI configuration\nproject_name=$2\nsrc_path=$(pwd)/$2/src\nbin_path=$(pwd)/$2/bin" >> $(pwd)/$2/jvi.conf 
 fi
 
-# New [class | project]
+# New [class]
+# TODO Add package support and parsing
 if [ "$1" = "new" ]; then
 	if [ "$2" = "class" ]; then
 		# If there are multiple, it will exit
@@ -122,7 +122,7 @@ if [ "$1" = "project_config" ]; then
 fi
 
 # Run
-# TODO Implement and test
+# TODO Find out how to run java files from absolute path
 if [ "$1" = "run" ]; then
 	echo "I won't run anything for you. Quit trying!"
 fi
@@ -137,4 +137,10 @@ fi
 # TODO Implement and test
 if [ "$1" = "build" ]; then
 	echo "Nothing to test, I'm afraid."
+fi
+
+# Buildall
+# TODO add error handling (if no files, no project, ...)
+if [ "$1" = "buildall" ]; then
+	javac -cp $(getSrcPath) -d $(getBinPath) $(getSrcPath)/*
 fi
