@@ -1,9 +1,12 @@
 #!/bin/bash
 # TODO Add custom autocomplete menu
 # TODO Change options handling to a switch statement?
+# TODO Rewrite Java Config class to bash script
 
-OPTIONS="new [project | class]	project_config	run	test"
+OPTIONS="new [class | project]	project_config	run	test	build"
 
+# ---- ---- CONFIG ---- ---- #
+# TODO Add error handling when many projects
 function findConfig {
 	# Find all jvi.conf files
 	CONF_LOCATION=$(find $(pwd) -name 'jvi.conf')
@@ -17,7 +20,25 @@ function findConfig {
 	echo $CONF_LOCATION
 }
 
-# findConfig
+# jvi.conf structure
+# project_name=Example
+# src_path=/full/path/to/project/src
+# bin_path=/full/path/to/project/bin
+
+function getProjectName {
+	CONFIG=$(findConfig)
+	echo $(cat $config | grep project_name | cut -f2 -d=)
+}
+
+function getSrcPath {
+	CONFIG=$(findConfig)
+	echo $(cat $CONFIG | grep src_path | cut -f2 -d=)
+}
+
+function getBinPath {
+	CONFIG=$(findConfig)
+	echo $(cat $CONFIG | grep bin_path | cut -f2 -d=)
+}
 
 # No option supplied
 if [ -z "$1" ]; then
@@ -26,7 +47,7 @@ if [ -z "$1" ]; then
 	exit
 fi
 
-# New [what]
+# New [class | project]
 if [ "$1" = "new" ]; then
 	if [ "$2" = "class" ]; then
 		# If there are multiple, it will exit
@@ -40,6 +61,7 @@ if [ "$1" = "new" ]; then
 		if [ -z $3 ]; then
 			echo "Specify the class name"
 			echo "Usage: $0 new class ClassName"
+			exit
 		fi
 		# Create the class and fill with boilerplate
 		touch $(pwd)/src/$3.java
