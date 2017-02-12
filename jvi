@@ -149,6 +149,7 @@ fi
 
 # Buildall
 # TODO add error handling (if no files, no project, ...)
+# TODO add option for verbose output (list built files)
 if [ "$1" = "buildall" ]; then
 	javac -cp $(getSrcPath) -d $(getBinPath) $(getSrcPath)/*
 fi
