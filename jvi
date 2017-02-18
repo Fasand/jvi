@@ -41,7 +41,7 @@ function getBinPath {
 # get filename without extension
 # echo "Prdel.test.class" | cut -d. -f1-$(echo "Prdel.test.class" | grep "\." -o | wc -l)
 function getExecutableClasses {
-	
+	echo 1
 }
 
 # ---- ---- OPTIONS ---- ---- #
